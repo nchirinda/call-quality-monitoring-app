@@ -87,9 +87,9 @@ export class ReviewService implements Resolve<Review> {
         });
     }
 
-
     getReview(): Promise<any> {
         return new Promise((resolve, reject) => {
+
             if (this.routeParams.id === 'new') {
                 this.onReviewChanged.next(null);
                 resolve(false);

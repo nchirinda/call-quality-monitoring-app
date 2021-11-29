@@ -12,8 +12,13 @@ const routes: Routes = [
         resolve: {data: ReviewsService},
     },
     {
-        path: 'new/:id', component: ReviewComponent,
-        data: {title: 'New Review :: Call Quality Monitoring App'},
+        path: 'create/:id', component: ReviewComponent,
+        data: {title: 'Create Review :: Call Quality Monitoring App'},
+        resolve: {data: ReviewService},
+    },
+    {
+        path: 'edit/:id', component: ReviewComponent,
+        data: {title: 'Edit Review :: Call Quality Monitoring App'},
         resolve: {data: ReviewService},
     },
 ];

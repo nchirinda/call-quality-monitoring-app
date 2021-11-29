@@ -89,7 +89,7 @@ export class ReviewsListComponent implements OnInit, AfterViewInit, OnDestroy {
                     duration: 5000
                 });
 
-                this.router.navigate([`/reviews/new/${dialogResult.reviewId}`]).then();
+                this.router.navigate([`/reviews/create/${dialogResult.reviewId}`]).then();
 
             } else {
                 console.log('Cancelled', 'Open New Review has been cancelled!');

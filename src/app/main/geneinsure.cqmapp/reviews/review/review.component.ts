@@ -65,18 +65,18 @@ export class ReviewComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
 
+        if (this._router.url.includes('edit')) {
+            console.log('Edit Mode');
+            this.pageType = 'edit';
+        } else if (this._router.url.includes('create')) {
+            console.log('Create Mode');
+            this.pageType = 'create';
+        }
+
         this._reviewService.reviewData
             .pipe(takeUntil(this.ngUnSubscribeAll))
             .subscribe(review => {
-
-                if (review) {
-                    this.review = review;
-                    this.pageType = 'edit';
-                } else {
-                    this.pageType = 'new';
-                    this.review = new Review();
-                }
-
+                this.review = review;
                 this.reviewForm = this.createReviewForm();
             });
 
@@ -107,10 +107,19 @@ export class ReviewComponent implements OnInit, OnDestroy {
                     this.endCallQstns = this.questions.filter(q => q.questionCategory.name === 'End Call');
                 }
 
-                // Populate Form with the question controls
-                this.questions.forEach(
-                    q => this.reviewForm.addControl('question' + q.number, new FormControl('N/A', Validators.required))
-                );
+                if (this.pageType === 'create') {
+                    // Populate Form with the question controls
+                    this.questions.forEach(
+                        q => this.reviewForm.addControl('question' + q.number, new FormControl('N/A', Validators.required))
+                    );
+                } else if (this.pageType === 'edit') {
+                    // Populate Form with the question controls and their answers
+                    this.questions.forEach(q => {
+                        const qAns: Answer = this.review.answers.find(ans => ans.question.id === q.id);
+                        this.reviewForm.addControl('question' + q.number, new FormControl(qAns.score, Validators.required));
+                        }
+                    );
+                }
 
                 // Create default Answers for the Review
                 this.createDefaultAnswers(this.questions);
@@ -141,22 +150,26 @@ export class ReviewComponent implements OnInit, OnDestroy {
 
     createDefaultAnswers(questions: Question[]): void {
 
-        const qAnswers: Answer[] = [];
+        if (this.pageType === 'create') {
+            const qAnswers: Answer[] = [];
 
-        questions.forEach(q => {
-            const ans: Answer = new Answer();
-            ans.answerType = q.answerType;
-            ans.maxPossible = 0;
-            ans.maxScore = 0;
-            ans.question = q;
-            ans.score = 0;
-            qAnswers.push(ans);
-        });
+            questions.forEach(q => {
+                const ans: Answer = new Answer();
+                ans.answerType = q.answerType;
+                ans.maxPossible = 0;
+                ans.maxScore = 0;
+                ans.question = q;
+                ans.score = 0;
+                qAnswers.push(ans);
+            });
 
-        this.answers.push(...qAnswers);
+            this.answers.push(...qAnswers);
 
-        // Add the Answers to the review
-        this.review.answers = this.answers;
+            // Add the Answers to the review
+            this.review.answers = this.answers;
+        } else if (this.pageType === 'edit') {
+
+        }
     }
 
     updateReviewScores(): void {

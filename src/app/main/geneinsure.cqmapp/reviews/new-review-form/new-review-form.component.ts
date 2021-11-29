@@ -49,7 +49,7 @@ export class NewReviewFormDialogComponent implements OnInit {
             this.dialogTitle = 'Edit Review';
             this.review = _data.review;
         } else {
-            this.dialogTitle = 'New Review';
+            this.dialogTitle = 'Open Review';
             this.review = new Review();
         }
 

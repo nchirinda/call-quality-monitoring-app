@@ -22,10 +22,10 @@
 
                 <div fxLayout="column" fxLayoutAlign="start start"
                      [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
-                    <div class="h2" *ngIf="pageType ==='edit'">
+                    <div class="h2" *ngIf="pageType ==='create'">
                         {{review.agent.user.firstName}} {{review.agent.user.lastName}} Review
                     </div>
-                    <div class="h2" *ngIf="pageType ==='new'">
+                    <div class="h2" *ngIf="pageType ==='edit'">
                         New Review
                     </div>
                     <div class="subtitle secondary-text">
@@ -83,14 +83,14 @@
             <button mat-raised-button
                     class="save-review-button"
                     [disabled]="reviewForm.invalid"
-                    *ngIf="pageType ==='new'" (click)="saveReview()">
-                <span>ADD</span>
+                    *ngIf="pageType ==='edit'" (click)="saveReview()">
+                <span>UPDATE REVIEW</span>
             </button>
 
             <button mat-raised-button
                     class="save-review-button"
                     [disabled]="reviewForm.invalid || reviewForm.pristine"
-                    *ngIf="pageType ==='edit'" (click)="saveReview()">
+                    *ngIf="pageType ==='create'" (click)="saveReview()">
                 <span>SAVE REVIEW</span>
             </button>
         </div>
