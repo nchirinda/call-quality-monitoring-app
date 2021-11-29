@@ -1,0 +1,26 @@
+@import "src/@fuse/scss/fuse";
+
+#review {
+
+    .answer-radio-group {
+        display: flex;
+        flex-direction: row;
+        margin: 5px 0;
+    }
+
+    .answer-radio-button {
+        margin: 5px;
+    }
+
+    .red-score {
+        color: red;
+    }
+
+    .orange-score {
+        color: orange;
+    }
+
+    .green-score {
+        color: green;
+    }
+}
