@@ -1,0 +1,129 @@
+<div id="reviews" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent"
+             fxLayout="column" fxLayoutAlign="center center"
+             fxLayout.gt-sm="row" fxLayoutAlign.gt-sm="space-between center">
+
+            <!-- APP TITLE -->
+            <div class="logo mb-24 mb-md-0"
+                 fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="logo-icon s-32 mr-16" [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}">
+                    shopping_basket
+                </mat-icon>
+                <span class="logo-text h1" [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    Reviews
+                </span>
+            </div>
+            <!-- / APP TITLE -->
+
+            <!-- SEARCH -->
+            <div class="search-wrapper mx-32 mx-md-0">
+                <div class="search" fxFlex fxLayout="row" fxLayoutAlign="start center">
+                    <mat-icon>search</mat-icon>
+                    <input #filter placeholder="Search for a Review">
+                </div>
+            </div>
+            <!-- / SEARCH -->
+
+            <!-- ADD BUTTON -->
+            <button mat-raised-button class="add-product-button fuse-white mt-24 mt-md-0" (click)="newReview()">
+                <span>ADD REVIEW</span>
+            </button>
+            <!-- / ADD BUTTON -->
+
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <mat-table #reviewsTable [dataSource]="dataSource"
+                       matSort matSortActive="code" matSortDirection="asc"
+                       class="reviews-table"
+                       [@animateStagger]="{value:'50'}"
+                       fusePerfectScrollbar>
+
+                <!-- ReviewDate Column -->
+                <ng-container matColumnDef="reviewDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Review Date</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                        {{rvw.reviewDate | customDateTime}}
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CallReference Column -->
+                <ng-container matColumnDef="callReference">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Call Reference</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                        {{rvw.callReference}}
+                    </mat-cell>
+                </ng-container>
+
+                <!-- CallRecordingReference Column -->
+                <ng-container matColumnDef="callRecordingReference">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Call Record Ref</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                        {{rvw.callRecordingReference}}
+                    </mat-cell>
+                </ng-container>
+
+                <!-- AgentName Column -->
+                <ng-container matColumnDef="agentName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Agent</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                        {{rvw.agent.user.firstName}} {{rvw.agent.user.lastName}}
+                    </mat-cell>
+                </ng-container>
+
+                <!-- SupervisorName Column -->
+                <ng-container matColumnDef="supervisorName">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Supervisor</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                        {{rvw.agent.supervisor.user.firstName}} {{rvw.agent.supervisor.user.lastName}}
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Score Column -->
+                <ng-container matColumnDef="score">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Score</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                            {{rvw.percentageScore}}%
+                    </mat-cell>
+                </ng-container>
+
+                <!-- Customer Column -->
+                <ng-container matColumnDef="customerNum">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Customer</mat-header-cell>
+                    <mat-cell *matCellDef="let rvw">
+                            {{rvw.customer.number}}
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></mat-header-row>
+
+                <mat-row *matRowDef="let rvw columns: displayedColumns;"
+                         class="reviews" matRipple
+                         [routerLink]="'/reviews/edit/' + rvw.id">
+                </mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator
+                           [length]="dataSource.filteredData.length"
+                           [pageIndex]="0"
+                           [pageSize]="10"
+                           [pageSizeOptions]="[10, 25, 50, 100]">
+            </mat-paginator>
+
+        </div>
+        <!-- / CONTENT CARD -->
+    </div>
+    <!-- / CENTER -->
+</div>
