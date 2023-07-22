@@ -1,0 +1,87 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar matDialogTitle class="mat-accent m-0">
+        <mat-toolbar-row fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{dialogTitle}}</span>
+            <button mat-icon-button (click)="matDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+
+        <mat-toolbar-row class="toolbar-bottom py-16" fxLayout="column" fxLayoutAlign="center center"></mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-24 pb-0 m-0" fusePerfectScrollbar>
+
+        <form [formGroup]="newReviewForm">
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label> Agent</mat-label>
+                    <mat-select formControlName="agent" placeholder="Select Agent" required>
+                        <mat-option *ngFor="let agent of agents" [value]="agent.id">
+                            {{agent.user.firstName}} {{agent.user.lastName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label> Supervisor</mat-label>
+                    <mat-select formControlName="supervisor" placeholder="Select Supervisor" required>
+                        <mat-option *ngFor="let supervisor of supervisors" [value]="supervisor.id">
+                            {{supervisor.user.firstName}} {{supervisor.user.lastName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Review Date</mat-label>
+                    <input matInput [matDatepicker]="rvwDatePicker" name="reviewDate" formControlName="reviewDate">
+                    <mat-datepicker-toggle matSuffix [for]="rvwDatePicker"></mat-datepicker-toggle>
+                    <mat-datepicker #rvwDatePicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Call Reference</mat-label>
+                    <mat-icon matSuffix class="secondary-text">phone</mat-icon>
+                    <input name="callReference" formControlName="callReference" matInput>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label>Call Recording Ref</mat-label>
+                    <mat-icon matSuffix class="secondary-text">email</mat-icon>
+                    <input name="callRecordingReference" formControlName="callRecordingReference" matInput >
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start start">
+                <mat-form-field appearance="outline" fxFlex>
+                    <mat-label> Agent</mat-label>
+                    <mat-select formControlName="customer" placeholder="Select Agent" required>
+                        <mat-option *ngFor="let cust of customers" [value]="cust.id">
+                            {{cust.user.firstName}} {{cust.user.lastName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-icon matSuffix class="secondary-text">account_circle</mat-icon>
+                </mat-form-field>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+
+        <button mat-raised-button color="accent" (click)="onSubmit()"> START REVIEW</button>
+
+    </div>
+</div>

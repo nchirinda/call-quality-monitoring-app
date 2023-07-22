@@ -1,0 +1,447 @@
+<div id="review" class="page-layout carded fullwidth inner-scroll">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg accent"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center">
+
+        <!-- HEADER -->
+        <div class="header accent" fxLayout="row" fxLayoutAlign="space-between center">
+
+            <!-- APP TITLE -->
+            <div fxLayout="row" fxLayoutAlign="start center">
+
+                <button mat-icon-button class="mr-0 mr-sm-16" [routerLink]="'/reviews'">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+
+                <div class="review-image mr-8 mr-sm-16"
+                     [@animate]="{value:'*',params:{delay:'50ms',scale:'0.2'}}"></div>
+
+                <div fxLayout="column" fxLayoutAlign="start start"
+                     [@animate]="{value:'*',params:{delay:'100ms',x:'-25px'}}">
+                    <div class="h2" *ngIf="pageType ==='create'">
+                        {{review.agent.user.firstName}} {{review.agent.user.lastName}} Review
+                    </div>
+                    <div class="h2" *ngIf="pageType ==='edit'">
+                        New Review
+                    </div>
+                    <div class="subtitle secondary-text">
+                        <span>Call Reference: {{review.callReference}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- / APP TITLE -->
+
+            <div *ngIf="review.reviewTarget.maxPercentage === 0" class="hero-text">
+                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    <strong>{{review.percentageScore}}%</strong>
+                </h1>
+                <h3 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    {{review.reviewTarget.message}}
+                </h3>
+            </div>
+
+            <div *ngIf="review.reviewTarget.maxPercentage === 50" class="hero-text red-score">
+                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    <strong>{{review.percentageScore}}%</strong>
+                </h1>
+                <h3 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    {{review.reviewTarget.message}}
+                </h3>
+            </div>
+
+            <div *ngIf="review.reviewTarget.maxPercentage === 64" class="hero-text orange-score">
+                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    <strong>{{review.percentageScore}}%</strong>
+                </h1>
+                <h3 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    {{review.reviewTarget.message}}
+                </h3>
+            </div>
+
+            <div *ngIf="review.reviewTarget.maxPercentage === 82" class="hero-text green-score">
+                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    <strong>{{review.percentageScore}}%</strong>
+                </h1>
+                <h3 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    {{review.reviewTarget.message}}
+                </h3>
+            </div>
+
+            <div *ngIf="review.reviewTarget.maxPercentage === 100" class="hero-text green-score">
+                <h1 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    <strong>{{review.percentageScore}}%</strong>
+                </h1>
+                <h3 [@animate]="{value:'*',params:{delay:'100ms', y:'25px'}}">
+                    {{review.reviewTarget.message}}
+                </h3>
+            </div>
+
+            <button mat-raised-button
+                    class="save-review-button"
+                    [disabled]="reviewForm.invalid"
+                    *ngIf="pageType ==='edit'" (click)="saveReview()">
+                <span>UPDATE REVIEW</span>
+            </button>
+
+            <button mat-raised-button
+                    class="save-review-button"
+                    [disabled]="reviewForm.invalid || reviewForm.pristine"
+                    *ngIf="pageType ==='create'" (click)="saveReview()">
+                <span>SAVE REVIEW</span>
+            </button>
+        </div>
+        <!-- / HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT -->
+            <div class="content">
+
+                <form name="reviewForm" [formGroup]="reviewForm" class="review w-100-p" fxLayout="column" fxFlex>
+
+                    <mat-tab-group>
+
+                        <mat-tab label="Greeting">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Greeting</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of greetingQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="space-between center">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of yesNoOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <!--<div class="section pb-48">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Handling Contact</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of handlingContactQstns" fxLayout="row wrap" fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0">{{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}" name="question{{qstn.number}}">
+                                            <mat-radio-button *ngFor="let opt of yesNoOptions" [value]="opt.value">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <div class="section pb-48">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Solution Information</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of solutionInfoQstns" fxLayout="row wrap" fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0">{{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}" name="question{{qstn.number}}">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <div class="section pb-48">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Notifications</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of notificationsQstns" fxLayout="row wrap" fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0">{{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}" name="question{{qstn.number}}">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <div class="section pb-48">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Telephony Skills</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of telephonyQstns" fxLayout="row wrap" fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0">{{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}" name="question{{qstn.number}}">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <div class="section pb-48">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Soft Skills</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of softSkillsQstns" fxLayout="row wrap" fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0">{{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}" name="question{{qstn.number}}">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                                <div class="section pb-48">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">End Call</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of endCallQstns" fxLayout="row wrap" fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0">{{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}" name="question{{qstn.number}}">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>-->
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Handling Contact">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Handling Contact</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of handlingContactQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="space-between center">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of yesNoOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Solution Information">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Solution Information</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of solutionInfoQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Notifications">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Notifications</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of notificationsQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Telephony Skills">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Telephony Skills</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of telephonyQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="Soft Skills">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">Soft Skills</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of softSkillsQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </mat-tab>
+
+                        <mat-tab label="End Call">
+
+                            <div class="tab-content p-24" fusePerfectScrollbar>
+
+                                <div class="section pb-48" fxFlex="60">
+
+                                    <div class="pb-16" fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-icon class="m-0 mr-16 secondary-text">account_circle</mat-icon>
+                                        <div class="h2 secondary-text">End Call</div>
+                                    </div>
+
+                                    <div *ngFor="let qstn of endCallQstns" fxLayout="row wrap"
+                                         fxLayoutAlign="start start">
+                                        <label *ngIf="questions.length > 0"><strong>{{qstn.number}}
+                                            .</strong> {{qstn.text}}</label>
+                                        <mat-radio-group formControlName="question{{qstn.number}}"
+                                                         name="question{{qstn.number}}"
+                                                         class="answer-radio-group">
+                                            <mat-radio-button *ngFor="let opt of rangeOptions" [value]="opt.value"
+                                                              class="answer-radio-button">
+                                                {{opt.option}}
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </mat-tab>
+
+                    </mat-tab-group>
+
+                </form>
+
+            </div>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>
