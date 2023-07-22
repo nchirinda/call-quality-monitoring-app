@@ -1,12 +1,6 @@
-# Fuse - Angular
+# Call Quality Monitoring Application
 
-Material Design Admin Template with Angular 8 and Angular Material
-
-## The Community
-
-Share your ideas, discuss Fuse and help each other.
-
-[Click here](http://fusetheme.com/community) to see our Community page.
+Front-end Application for the Call Quality Monitoring application for tracking the quality of service provided by call center agents
 
 ## Development server
 
